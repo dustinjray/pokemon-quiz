@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport"
+		      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Document</title>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="container">
+				<h1>How Many Pokémon Can You Name?</h1>
+				<div class="card">
+					<p class="intro">There are a lot of Pokémon. Like. Way more than a ton. I know I've missed several
+						generations of the games, so I definitely don't know all of them, but how many do you think you
+						can name?</p>
+					<p class="intro">According to Google, the average typing speed is 42 words per minute with an
+						accuracy rate of 92%. So it would, theoretically, take you at least 21 minutes, on average, to
+						type all their names out. I know BuzzFeed only gives you like 8 minutes to accomplish such a
+						task, but I'm going to be generous, since many of us are still stuck at home with little to do
+						right now, and give you 25 minutes.</p>
+					<p class="intro">That's enough minutes for about 160 extra Pokémon!</p>
+					<p class="intro">So when you're ready, hit the button below to bring up the game. The timer won't
+						start until you begin typing. There's no time to worry about hitting enter, I'll take care of
+						that for you. Capitalization doesn't count but punctuation does, <i>(hint hint)</i> If you get
+						bored, you can hit the give up button to see the final results and check out which ones you
+						missed. Pressing the replay button will reset the game, waiting for you to begin typing before
+						the timer starts. </p>
+					<p class="intro">P.S. Don't try to play this on your phone. It just won't end well (and may not work
+						at all, I didn't test it because that seemed ridiculous.)</p>
+					<p class="intro">Good luck. You're going to need it.</p>
+					<button class="start">Start</button>
+				</div>
+				<div class="game">
+					<ul class="tips">
+						<li>
+							<h3>No Regional Forms</h3>
+						</li>
+						<li>
+							<h3>No Mega Evolutions</h3>
+						</li>
+					</ul>
+					<div class="card sprites" id="correct">
+						<div class="anchor" style="overflow-anchor: auto"></div>
+					</div>
+					<input type="text" class="guess-input" placeholder="Enter a Pokémon Name">
+				</div>
+			</div>
+		</div>
+		
+		<script src="script.js"></script>
+	</body>
+</html>
