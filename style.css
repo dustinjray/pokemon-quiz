@@ -66,17 +66,17 @@ button:focus {
 .card.sprites {
     padding: 10px;
     max-width: 1200px;
-    height: 50vh;
-    max-height: 50vh;
+    height: 40vh;
+    max-height:40vh;
     overflow: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    overflow-anchor: none;
+
 }
 
 .identified:last-of-type {
-    overflow-anchor: auto;
+
 }
 
 .tips {
@@ -120,4 +120,8 @@ button:focus {
 .guess-input {
     width: 25%;
     margin: 1rem 0;
+}
+
+.btn-div {
+    margin-bottom: 2rem;
 }

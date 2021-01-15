@@ -25,14 +25,17 @@ function addToList(id) {
     identified.appendChild(pokemon);
 }
 
-function updateScroll() {
-    identified.scrollTop = identified.scrollHeight;
+function correctGuess() {
+    void identified.offsetWidth();
+    identified.classList.value = "card sprites";
 }
 
 function populateArray(array) {
     for (let i = 0; i < array.length; i++) {
-        if(i === 121 || i === 438 || i === 865) {
+        if(i === 121 || i === 438 || i === 865 || i === 82) {
             switch (i) {
+                case 82: pokemonNames.push("farfetch'd");
+                break;
                 case 121: pokemonNames.push("mr. mime");
                 break;
                 case 438: pokemonNames.push("mime jr.");
@@ -69,5 +72,9 @@ input.addEventListener('input', (e) => {
         if(checkName(inputText)) {
             input.value = "";
         }
+    }
+    const identifiedPokemon = identified.children;
+    if (identifiedPokemon.length >= 1) {
+        identifiedPokemon[identifiedPokemon.length - 1].scrollIntoView(false);
     }
 });
