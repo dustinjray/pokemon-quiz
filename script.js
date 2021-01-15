@@ -13,8 +13,8 @@ const guessedIndex= [];
 
 let gameStart = false;
 let gameEnd = false;
-let minutes = 0;
-let seconds = 30;
+let minutes = 25;
+let seconds = 0;
 let interval;
 
 startBtn.disabled = true;
