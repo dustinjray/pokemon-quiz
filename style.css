@@ -2,7 +2,14 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
+    background-image: url("assets/pokeball-background.png");
+    background-color: black;
+    color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,10 +23,6 @@ h1 {
 .wrapper {
     height: 100vh;
     width: 100vw;
-}
-
-.container {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,11 +30,21 @@ h1 {
 }
 
 .card {
+    background-color: #b0bec5;
     border: 1px solid #424242;
     border-radius: 16px;
+    color: black;
     width: 80%;
     max-width: 800px;
     padding: 30px 50px;
+}
+
+.start {
+    margin: auto;
+}
+
+.instructions {
+    margin-top: 5rem;
 }
 
 .game {
@@ -47,16 +60,24 @@ button {
     background-color: #03a9f4;
     color: #fff;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 0;
     border-radius: 16px;
     box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
     letter-spacing: 2px;
+    margin: 4px;
     font-size: 20px;
     padding: .5em 1.5em;
 }
 
 button:focus {
     outline: none;
+}
+
+button:disabled {
+    cursor: not-allowed;
 }
 
 .hidden {
@@ -72,11 +93,25 @@ button:focus {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-
 }
 
-.identified:last-of-type {
+.card.correct {
+    animation: correct-border 0.7s ease-out;
+}
 
+@keyframes correct-border {
+    0% {
+        border: 2px solid #64dd17;
+        box-shadow: 0 0 50px #64dd17;
+    }
+     40% {
+         border: 1px solid #64dd17;
+         box-shadow: 0 0 50px #64dd17;
+     }
+    100% {
+        border: 1px solid black;
+        box-shadow: 0 0 1px white;
+    }
 }
 
 .tips {
@@ -98,9 +133,6 @@ button:focus {
 }
 
 .div-sprite {
-    /*position: relative;*/
-    /*right: 10px;*/
-    /*display: inline-block;*/
     width: 50px;
     height: 50px;
 }
@@ -117,11 +149,72 @@ button:focus {
     margin-right: 8px;
 }
 
+.controls {
+    display: grid;
+    grid-template-areas:
+        "input input input"
+        "game timer time"
+        "game timer time";
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    justify-items: center;
+    width: 60%;
+}
+
+.input-buttons-div {
+    min-width: 75%;
+}
+
 .guess-input {
-    width: 25%;
+    width: 50%;
+    height: 2rem;
     margin: 1rem 0;
+    grid-area: input;
+    text-align: center;
+}
+
+.guess-input:focus {
+    outline: none;
 }
 
 .btn-div {
-    margin-bottom: 2rem;
+    height: 100%;
+    width: 100%;
+    grid-area: game;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.timer-div {
+    display: flex;
+    font-size: 3rem;
+    grid-area: timer;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+}
+
+.timer-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    grid-area: time;
+    justify-content: space-evenly;
+    width: 80%;
+    height: 100%;
+}
+
+.card.missed-div {
+    text-align: center;
+}
+
+.missed {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.missed li {
+    margin: 4px 12px;
 }
