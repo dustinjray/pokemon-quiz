@@ -7,15 +7,21 @@ const twelveBtn = document.querySelector("#twelve");
 const twentyFiveBtn = document.querySelector("#twenty-five");
 const endBtn = document.querySelector(".end");
 const restartBtn = document.querySelector(".restart");
-const pokemonNames = [];
-const guessed = [];
-const guessedIndex = [];
+// const pokemonNames = [];
+// const guessed = [];
+// const guessedIndex = [];
+
+const pokemonInfo = {};
+const guessed = {};
+
 
 let gameStart = false;
 let gameEnd = false;
 let minutes = 1;
 let seconds = 1;
 let interval;
+let numberGuessed = 0;
+let totalPokemon = 0;
 
 startBtn.disabled = true;
 restartBtn.disabled = true;
@@ -26,6 +32,7 @@ async function getPokemonNames() {
     // Get a list of every pokemon from the pokemon api
     const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=898");
     const data = await res.json();
+    totalPokemon = data.results.length;
     populateArray(data.results);
 }
 
@@ -41,7 +48,9 @@ function addToList(id) {
     identified.appendChild(pokemon);
 }
 
-function correctGuess() {
+function playCorrectGuessAnimation() {
+    // Utiilize offsetWidth to force a page repaint so that CSS animation will play again when a correct answer is entered.
+    // Technique found here: https://stackoverflow.com/questions/50612096/removing-class-from-element-isnt-triggering-css-animation
     void identified.offsetWidth;
     identified.classList.remove("correct");
     void identified.offsetWidth;
@@ -49,94 +58,208 @@ function correctGuess() {
 }
 
 function populateArray(array) {
+    // Adds the name of each pokemon to the array of answers.
     for (let i = 0; i < array.length; i++) {
         // Fix names that have unnecessary characters or regional qualifiers.
         switch (i) {
-            case 82: pokemonNames.push("farfetch'd");
+            case 82:
+                pokemonInfo["farfetch'd"] = { number: i, guessed: false };
+                // pokemonNames.push("farfetch'd");
                 break;
-            case 121: pokemonNames.push("mr. mime");
+            case 121:
+                pokemonInfo["mr. mime"] = { number: i, guessed: false };
+                // pokemonNames.push("mr. mime");
                 break;
-            case 385: pokemonNames.push("deoxys");
+            case 385:
+                pokemonInfo["deoxys"] = { number: i, guessed: false };
+                //pokemonNames.push("deoxys");
                 break;
-            case 412: pokemonNames.push("wormadam");
+            case 412:
+                pokemonInfo["wormadam"] = { number: i, guessed: false };
+                //pokemonNames.push("wormadam");
                 break;
-            case 438: pokemonNames.push("mime jr.");
+
+            case 438:
+                pokemonInfo["mime jr."] = { number: i, guessed: false };
+                // pokemonNames.push("mime jr.");
                 break;
-            case 486: pokemonNames.push("giratina");
+
+            case 486:
+                pokemonInfo["giratina"] = { number: i, guessed: false };
+                //pokemonNames.push("giratina");
                 break;
-            case 491: pokemonNames.push("shaymin");
+
+            case 491:
+                pokemonInfo["shaymin"] = { number: i, guessed: false };
+                //pokemonNames.push("shaymin");
                 break;
-            case 549: pokemonNames.push("basculin");
+
+            case 549:
+                pokemonInfo["basculin"] = { number: i, guessed: false };
+                //pokemonNames.push("basculin");
                 break;
-            case 554: pokemonNames.push("darmanitan");
+
+            case 554:
+                pokemonInfo["darmanitan"] = { number: i, guessed: false };
+                //pokemonNames.push("darmanitan");
                 break;
-            case 640: pokemonNames.push("tornadus");
+
+            case 640:
+                pokemonInfo["tornadus"] = { number: i, guessed: false };
+                //pokemonNames.push("tornadus");
                 break;
-            case 641: pokemonNames.push("thundurus");
+
+            case 641:
+                pokemonInfo["thundurus"] = { number: i, guessed: false };
+                //pokemonNames.push("thundurus");
                 break;
-            case 644: pokemonNames.push("landorus");
+
+            case 644:
+                pokemonInfo["landorus"] = { number: i, guessed: false };
+                //pokemonNames.push("landorus");
                 break;
-            case 646: pokemonNames.push("keldeo");
+
+            case 646:
+                pokemonInfo["keldeo"] = { number: i, guessed: false };
+                //pokemonNames.push("keldeo");
                 break;
-            case 647: pokemonNames.push("meloetta");
+
+            case 647:
+                pokemonInfo["meloetta"] = { number: i, guessed: false };
+                //pokemonNames.push("meloetta");
                 break;
-            case 677: pokemonNames.push("meowstic");
+
+            case 677:
+                pokemonInfo["meowstic"] = { number: i, guessed: false };
+                //pokemonNames.push("meowstic");
                 break;
-            case 680: pokemonNames.push("aegislash");
+
+            case 680:
+                pokemonInfo["aegislash"] = { number: i, guessed: false };
+                //pokemonNames.push("aegislash");
                 break;
-            case 709: pokemonNames.push("pumpkaboo");
+
+            case 709:
+                pokemonInfo["pumpkaboo"] = { number: i, guessed: false };
+                //pokemonNames.push("pumpkaboo");
                 break;
-            case 710: pokemonNames.push("gourgeist");
+
+            case 710:
+                pokemonInfo["gourgeist"] = { number: i, guessed: false };
+                //pokemonNames.push("gourgeist");
                 break;
-            case 740: pokemonNames.push("oricorio");
+
+            case 740:
+                pokemonInfo["oricorio"] = { number: i, guessed: false };
+                //pokemonNames.push("oricorio");
                 break;
-            case 744: pokemonNames.push("lycanroc");
+
+            case 744:
+                pokemonInfo["lycanroc"] = { number: i, guessed: false };
+                //pokemonNames.push("lycanroc");
                 break;
-            case 745: pokemonNames.push("wishiwashi");
+
+            case 745:
+                pokemonInfo["wishiwashi"] = { number: i, guessed: false };
+                //pokemonNames.push("wishiwashi");
                 break;
-            case 771: pokemonNames.push("type: null");
+
+            case 771:
+                pokemonInfo["type: null"] = { number: i, guessed: false };
+                //pokemonNames.push("type: null");
                 break;
-            case 773: pokemonNames.push("minior");
+
+            case 773:
+                pokemonInfo["minior"] = { number: i, guessed: false };
+                //pokemonNames.push("minior");
                 break;
-            case 777: pokemonNames.push("mimikyu");
+
+            case 777:
+                pokemonInfo["mimikyu"] = { number: i, guessed: false };
+                //pokemonNames.push("mimikyu");
                 break;
-            case 784: pokemonNames.push("tapu koko");
+
+            case 784:
+                pokemonInfo["tapu koko"] = { number: i, guessed: false };
+                //pokemonNames.push("tapu koko");
                 break;
-            case 785: pokemonNames.push("tapu lele");
+
+            case 785:
+                pokemonInfo["tapu lele"] = { number: i, guessed: false };
+                //pokemonNames.push("tapu lele");
                 break;
-            case 786: pokemonNames.push("tapu bulu");
+
+            case 786:
+                pokemonInfo["tapu bulu"] = { number: i, guessed: false };
+                //pokemonNames.push("tapu bulu");
                 break;
-            case 787: pokemonNames.push("tapu fini");
+
+            case 787:
+                pokemonInfo["tapu fini"] = { number: i, guessed: false };
+                //pokemonNames.push("tapu fini");
                 break;
-            case 848: pokemonNames.push("toxtricity");
+
+            case 848:
+                pokemonInfo["toxtricity"] = { number: i, guessed: false };
+                //pokemonNames.push("toxtricity");
                 break;
-            case 864: pokemonNames.push("sirfetch'd");
+
+            case 864:
+                pokemonInfo["sirfetch'd"] = { number: i, guessed: false };
+                //pokemonNames.push("sirfetch'd");
                 break;
-            case 865: pokemonNames.push("mr. rime");
+
+            case 865:
+                pokemonInfo["mr. rime"] = { number: i, guessed: false };
+                //pokemonNames.push("mr. rime");
                 break;
-            case 874: pokemonNames.push("eiscue");
+
+            case 874:
+                pokemonInfo["eiscue"] = { number: i, guessed: false };
+                //pokemonNames.push("eiscue");
                 break;
-            case 887: pokemonNames.push("zacian");
+
+            case 887:
+                pokemonInfo["zacian"] = { number: i, guessed: false };
+                //pokemonNames.push("zacian");
                 break;
-            case 888: pokemonNames.push("zamazenta");
+
+            case 888:
+                pokemonInfo["zamazenta"] = { number: i, guessed: false };
+                //pokemonNames.push("zamazenta");
                 break;
-            case 891: pokemonNames.push("urshifu");
+
+            case 891:
+                pokemonInfo["urshifu"] = { number: i, guessed: false };
+                //pokemonNames.push("urshifu");
                 break;
-            default: pokemonNames.push(array[i].name.toLowerCase());
+            default:
+                pokemonInfo[array[i].name.toLowerCase()] = { number: i, guessed: false };
+            //pokemonNames.push(array[i].name.toLowerCase());
         }
     }
     startBtn.disabled = false;
 }
 
+function resetGuesses() {
+    for (const pokemon in pokemonInfo) {
+        pokemonInfo[pokemon].guessed = false;
+    }
+}
+
 function checkName(name) {
-    if (pokemonNames.includes(name)) {
-        const index = pokemonNames.indexOf(name);
-        guessed.push(name);
-        guessedIndex.push(index);
-        addToList(index);
+    if (pokemonInfo.hasOwnProperty(name) && !pokemonInfo[name].guessed) {
         return true;
     }
     return false;
+    // if (pokemonNames.includes(name)) {
+    //     const index = pokemonNames.indexOf(name);
+    //     guessed.push(name);
+    //     guessedIndex.push(index);
+    //     addToList(index);
+    //     return true;
+    // }
+    // return false;
 }
 
 function countdownSeconds() {
@@ -199,18 +322,36 @@ function endGame() {
 
 function populateMissed() {
     const scoreText = document.querySelector(".score");
-    scoreText.innerText = `You Remembered ${guessed.length} / ${pokemonNames.length}!`
+    scoreText.innerText = `You Remembered ${numberGuessed} / ${totalPokemon}!`
     const missedCard = document.querySelector(".missed-div");
     const missed = document.querySelector(".missed");
-    const missedList = pokemonNames.filter(name => !guessed.includes(name));
-    for (let name of missedList) {
-        const item = document.createElement("li");
-        item.innerHTML = `<span>${name}</span>`;
-        missed.appendChild(item);
+    for (const pokemon in pokemonInfo) {
+        if (!pokemonInfo[pokemon].guessed) {
+            console.log(pokemon);
+            const missedName = document.createElement("li");
+            missedName.innerHTML = `<span>${pokemon}</span>`;
+            missed.appendChild(missedName);
+        }
     }
     missedCard.classList.remove("hidden");
     missedCard.scrollIntoView(true);
 }
+
+
+// function populateMissed() {
+//     const scoreText = document.querySelector(".score");
+//     scoreText.innerText = `You Remembered ${numberGuessed} / ${totalPokemon}!`
+//     const missedCard = document.querySelector(".missed-div");
+//     const missed = document.querySelector(".missed");
+//     const missedList = pokemonNames.filter(name => !guessed.includes(name));
+//     for (let name of missedList) {
+//         const item = document.createElement("li");
+//         item.innerHTML = `<span>${name}</span>`;
+//         missed.appendChild(item);
+//     }
+//     missedCard.classList.remove("hidden");
+//     missedCard.scrollIntoView(true);
+// }
 
 function clearMissed() {
     const missedCard = document.querySelector(".missed-div");
@@ -255,30 +396,34 @@ restartBtn.addEventListener('click', () => {
     gameStart = false;
     clearMissed();
     clearSprites();
+    resetGuesses();
     if (minutes <= 0) {
         minutes = 25;
         setMinutesText();
     };
-    guessed.length = 0;
-    guessedIndex.length = 0;
     restartBtn.disabled = true;
     input.disabled = false;
+    numberGuessed = 0;
 });
 
 input.addEventListener('input', (e) => {
     if (gameStart && !gameEnd) {
+        // If the game has started and has not ended, grab the input text and check it against correct guesses and possible answers.
         const inputText = e.target.value.toLowerCase().trim();
-        if (!guessed.includes(inputText)) {
+        if (pokemonInfo.hasOwnProperty(inputText)) {
             if (checkName(inputText)) {
+                addToList(pokemonInfo[inputText].number);
+                pokemonInfo[inputText].guessed = true;
                 input.value = "";
-                correctGuess();
+                playCorrectGuessAnimation();
+                numberGuessed++;
             }
         }
     } else {
+        // Start the game and timer, disable the time buttons until the game is over.
         gameStart = true;
         interval = setInterval(countdownSeconds, 1000);
         disableTimeBtns();
-        console.log("Game started");
     }
     const identifiedPokemon = identified.children;
     if (identifiedPokemon.length >= 1) {
