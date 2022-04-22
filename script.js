@@ -17,8 +17,8 @@ const guessed = {};
 
 let gameStart = false;
 let gameEnd = false;
-let minutes = 1;
-let seconds = 1;
+let minutes = 25;
+let seconds = 0;
 let interval;
 let numberGuessed = 0;
 let totalPokemon = 0;
@@ -33,7 +33,7 @@ async function getPokemonNames() {
     const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=898");
     const data = await res.json();
     totalPokemon = data.results.length;
-    populateArray(data.results);
+    populateAnswers(data.results);
 }
 
 function addToList(id) {
@@ -57,8 +57,8 @@ function playCorrectGuessAnimation() {
     identified.classList.add("correct");
 }
 
-function populateArray(array) {
-    // Adds the name of each pokemon to the array of answers.
+function populateAnswers(array) {
+    // Adds the name of each pokemon to the object that manages correct answers.
     for (let i = 0; i < array.length; i++) {
         // Fix names that have unnecessary characters or regional qualifiers.
         switch (i) {
@@ -242,24 +242,16 @@ function populateArray(array) {
 }
 
 function resetGuesses() {
+    //Reset all pokemon names to not guessed status.
     for (const pokemon in pokemonInfo) {
         pokemonInfo[pokemon].guessed = false;
     }
 }
 
 function checkName(name) {
-    if (pokemonInfo.hasOwnProperty(name) && !pokemonInfo[name].guessed) {
-        return true;
-    }
-    return false;
-    // if (pokemonNames.includes(name)) {
-    //     const index = pokemonNames.indexOf(name);
-    //     guessed.push(name);
-    //     guessedIndex.push(index);
-    //     addToList(index);
-    //     return true;
-    // }
-    // return false;
+    //Check if the pokemon name is correct and if it has not already been guessed this game.
+    return pokemonInfo.hasOwnProperty(name) && !pokemonInfo[name].guessed;
+
 }
 
 function countdownSeconds() {
@@ -321,13 +313,13 @@ function endGame() {
 }
 
 function populateMissed() {
+    // Create list items for each pokemon name that was not guessed this game.
     const scoreText = document.querySelector(".score");
     scoreText.innerText = `You Remembered ${numberGuessed} / ${totalPokemon}!`
     const missedCard = document.querySelector(".missed-div");
     const missed = document.querySelector(".missed");
     for (const pokemon in pokemonInfo) {
         if (!pokemonInfo[pokemon].guessed) {
-            console.log(pokemon);
             const missedName = document.createElement("li");
             missedName.innerHTML = `<span>${pokemon}</span>`;
             missed.appendChild(missedName);
@@ -336,22 +328,6 @@ function populateMissed() {
     missedCard.classList.remove("hidden");
     missedCard.scrollIntoView(true);
 }
-
-
-// function populateMissed() {
-//     const scoreText = document.querySelector(".score");
-//     scoreText.innerText = `You Remembered ${numberGuessed} / ${totalPokemon}!`
-//     const missedCard = document.querySelector(".missed-div");
-//     const missed = document.querySelector(".missed");
-//     const missedList = pokemonNames.filter(name => !guessed.includes(name));
-//     for (let name of missedList) {
-//         const item = document.createElement("li");
-//         item.innerHTML = `<span>${name}</span>`;
-//         missed.appendChild(item);
-//     }
-//     missedCard.classList.remove("hidden");
-//     missedCard.scrollIntoView(true);
-// }
 
 function clearMissed() {
     const missedCard = document.querySelector(".missed-div");
